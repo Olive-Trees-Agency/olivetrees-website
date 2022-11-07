@@ -1,0 +1,16 @@
+body .transition {
+  display: block;
+}
+
+.w-editor .transition {
+  display: none;
+}
+
+.no-scroll-transition {
+  overflow: hidden;
+  position: relative;
+}
+
+.section_gallery-horizontal_trigger {
+  height: calc(100% - 100vh);
+}

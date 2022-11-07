@@ -1,7 +1,10 @@
-import { greetUser } from '$utils/greet';
+import '$styles/index.css';
+
+import { pageLoad } from './animations';
 
 window.Webflow ||= [];
+
+// On Webflow load
 window.Webflow.push(() => {
-  const name = 'John Doe';
-  greetUser(name);
+  pageLoad();
 });

@@ -1,3 +1,7 @@
+/*
+  !!! To improve performance, the content of this file should be pasted in the global head tag of your website !!!
+*/
+
 body .transition {
   display: block;
 }
@@ -9,8 +13,4 @@ body .transition {
 .no-scroll-transition {
   overflow: hidden;
   position: relative;
-}
-
-.section_gallery-horizontal_trigger {
-  height: calc(100% - 100vh);
 }

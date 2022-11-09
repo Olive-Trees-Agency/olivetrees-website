@@ -1,10 +1,12 @@
 import '$styles/index.css';
 
-import { pageLoad } from './animations';
+import { pageLoad, registerGalleryHorizontalScroll } from './animations';
 
 window.Webflow ||= [];
 
 // On Webflow load
 window.Webflow.push(() => {
-  pageLoad();
+  pageLoad().then(() => {
+    registerGalleryHorizontalScroll();
+  });
 });

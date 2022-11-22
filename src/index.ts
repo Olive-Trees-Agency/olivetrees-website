@@ -19,9 +19,7 @@ window.Webflow.push(() => {
   });
 
   // Reload page when rescaled to phone
-  matchPhoneAll.addEventListener('change', (e) => {
-    if (e.matches) {
-      window.location.reload();
-    }
+  matchPhoneAll.addEventListener('change', () => {
+    window.location.reload();
   });
 });

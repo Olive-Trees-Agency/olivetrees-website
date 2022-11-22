@@ -4,6 +4,7 @@
     "rootDir": ".",
     "baseUrl": "./",
     "paths": {
+      "$utils": ["src/utils/*"],
       "$styles/*": ["src/styles/*"],
       "$animations": ["src/animations/*"]
     }

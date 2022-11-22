@@ -1,12 +1,27 @@
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import '$styles/index.css';
 
-import { pageLoad, registerGalleryHorizontalScroll } from './animations';
+import { pageLoad, loadHome } from './pages';
+import { matchPhoneAll } from './utils';
 
 window.Webflow ||= [];
+gsap.registerPlugin(ScrollTrigger);
 
 // On Webflow load
 window.Webflow.push(() => {
-  pageLoad().then(() => {
-    registerGalleryHorizontalScroll();
+  pageLoad(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath === '/' || currentPath === '/home') {
+      loadHome();
+    }
+  });
+
+  // Reload page when rescaled to phone
+  matchPhoneAll.addEventListener('change', (e) => {
+    if (e.matches) {
+      window.location.reload();
+    }
   });
 });

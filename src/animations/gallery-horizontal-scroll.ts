@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
  * Otherwise the gsap scroll trigger can get an offset.
  * This mainly happens when lazy loading images without defined height.
  */
-export const registerGalleryHorizontalScroll = () => {
+export const registerGalleryHorizontalScroll = async () => {
   $('.section_gallery-horizontal_trigger').css('height', 'calc(100% - 100vh)');
 
   const horizontalItem = $('.section_gallery-horizontal_collection-item');
@@ -62,7 +62,8 @@ export const registerGalleryHorizontalScroll = () => {
   let resizeTimeout: number;
   window.addEventListener('resize', () => {
     if (resizeTimeout) clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => calculateScroll(), 500);
+    // timeout set to 0 because loses sync with validate on refresh of other animations
+    resizeTimeout = setTimeout(() => calculateScroll(), 0);
   });
 
   const tl = gsap.timeline({
@@ -71,13 +72,26 @@ export const registerGalleryHorizontalScroll = () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 2,
-      markers: true,
+      markers: false,
       invalidateOnRefresh: true,
+      onLeaveBack: () => {
+        ScrollTrigger.getById('horizontal-gallery-heading')?.enable();
+        ScrollTrigger.getById('horizontal-gallery-caption')?.enable();
+      },
     },
   });
 
   tl.to('.section_gallery-horizontal_collection-list', {
     x: () => -moveDistance,
     duration: 1,
+    onStart: () => {
+      ScrollTrigger.getById('horizontal-gallery-heading')?.disable();
+      ScrollTrigger.getById('horizontal-gallery-caption')?.disable();
+    },
+    // onUpdate: () => {
+    //   // Update the text scrolltriggers so that text doesn't animate out (fix for sticky content).
+    //   ScrollTrigger.getById('horizontal-gallery-heading')?.refresh();
+    //   ScrollTrigger.getById('horizontal-gallery-caption')?.refresh();
+    // },
   });
 };

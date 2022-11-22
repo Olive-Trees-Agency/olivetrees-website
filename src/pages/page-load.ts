@@ -1,7 +1,26 @@
 import { simulateEvent } from '@finsweet/ts-utils';
 import { gsap } from 'gsap';
 
-export const pageLoad = () => {
+import {
+  registerCharsSlideUp,
+  registerWordsSlideUp,
+  registerNavigation,
+  registerBackgroundColor,
+} from '../animations';
+import { registerSplitText } from '../utils';
+
+export const pageLoad = (beforeAnimationStart: CallableFunction) => {
+  // Register core animations
+  registerNavigation();
+  registerSplitText().then(() => {
+    registerCharsSlideUp();
+    registerWordsSlideUp();
+  });
+  registerBackgroundColor();
+
+  // Callback before done loading animation starts
+  beforeAnimationStart();
+
   // Play the lottie animation
   const t = document.querySelector('.transition_background_lottie') as EventTarget;
   simulateEvent(t, 'click');

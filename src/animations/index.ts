@@ -1,6 +1,7 @@
-export { registerGalleryHorizontalScroll } from './gallery-horizontal-scroll';
-export { registerBackgroundColor } from './background-color';
-export { registerCharsSlideUp, registerWordsSlideUp } from './text';
-export { registerHeroHome } from './hero-home';
-export { registerWebCta } from './web-cta';
+export * from './gallery-horizontal-scroll';
+export * from './background-color';
+export * from './text';
+export * from './hero-home';
+export * from './web-cta';
 export * from './navigation';
+export * from './text-loop';

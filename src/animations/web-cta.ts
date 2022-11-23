@@ -20,19 +20,19 @@ export const registerWebCta = () => {
 
       if (element.className.includes('is-1')) {
         gsap.set(element, {
-          backgroundColor: '#c96c00',
+          backgroundColor: '#8BB005',
         });
       }
 
       if (element.className.includes('is-3')) {
         gsap.set(element, {
-          backgroundColor: '#9fca07',
+          backgroundColor: '#B05E00',
         });
       }
 
       if (element.className.includes('is-5')) {
         gsap.set(element, {
-          backgroundColor: '#f5f5dc',
+          backgroundColor: '#d4d4d4',
         });
       }
 

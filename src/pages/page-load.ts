@@ -9,6 +9,8 @@ import {
 } from '../animations';
 import { registerSplitText } from '../utils';
 
+let delay = 0.2;
+
 export const pageLoad = (beforeAnimationStart: CallableFunction) => {
   // Register core animations
   registerNavigation();
@@ -29,8 +31,8 @@ export const pageLoad = (beforeAnimationStart: CallableFunction) => {
     .to('.transition', {
       y: '-101%',
       display: 'none',
-      duration: 1,
-      delay: 0.25,
+      duration: 0.8,
+      delay: delay,
       ease: 'expo',
     })
     .play();
@@ -44,7 +46,7 @@ export const pageNavigate = () => {
     .to('.transition', {
       y: '0%',
       display: 'block',
-      duration: 1,
+      duration: 0.7,
       ease: 'expo',
     })
     .play();
@@ -60,6 +62,7 @@ $('a').on('click', function (e) {
   ) {
     e.preventDefault();
     const transitionURL = $(this).attr('href');
+    delay = 0;
     pageNavigate().then(() => {
       if (transitionURL) {
         window.location.assign(transitionURL);

@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import '$styles/index.css';
 
-import { pageLoad, loadHome } from './pages';
+import { pageLoad, loadHome, loadContact } from './pages';
 import { matchPhoneAll } from './utils';
 
 window.Webflow ||= [];
@@ -15,6 +15,8 @@ window.Webflow.push(() => {
     const currentPath = window.location.pathname;
     if (currentPath === '/' || currentPath === '/home') {
       loadHome();
+    } else if (currentPath === '/contact') {
+      loadContact();
     }
   });
 

@@ -5,3 +5,4 @@ export * from './hero-home';
 export * from './web-cta';
 export * from './navigation';
 export * from './text-loop';
+export * from './horizontal-slideshow';

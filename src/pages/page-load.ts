@@ -68,5 +68,8 @@ $('a').on('click', function (e) {
         window.location.assign(transitionURL);
       }
     });
+  } else if ($(this)?.attr('href')?.indexOf('#top')) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 });

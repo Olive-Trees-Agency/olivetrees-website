@@ -85,8 +85,8 @@ export const registerGalleryHorizontalScroll = async () => {
     x: () => -moveDistance,
     duration: 1,
     onStart: () => {
-      ScrollTrigger.getById('horizontal-gallery-heading')?.disable();
-      ScrollTrigger.getById('horizontal-gallery-caption')?.disable();
+      ScrollTrigger.getById('horizontal-gallery-heading')?.disable(false, false);
+      ScrollTrigger.getById('horizontal-gallery-caption')?.disable(false, false);
     },
     // onUpdate: () => {
     //   // Update the text scrolltriggers so that text doesn't animate out (fix for sticky content).

@@ -1,6 +1,9 @@
 import { gsap } from 'gsap';
 
 let scrollTween: gsap.core.Tween | null;
+let buttonRightTl: gsap.core.Timeline | null;
+let buttonLeftTl: gsap.core.Timeline | null;
+let isInitialized = false;
 
 export const registerHorizontalSlideshow = (
   list: HTMLElement,
@@ -8,50 +11,68 @@ export const registerHorizontalSlideshow = (
   gap: number,
   instanceName: string
 ) => {
-  const buttonLeft = document.querySelector(`[slideshow-button-left=${instanceName}]`);
-  const buttonRight = document.querySelector(`[slideshow-button-right=${instanceName}]`);
+  const buttonLeft = document.querySelector<HTMLElement>(`[slideshow-button-left=${instanceName}]`);
+  const buttonRight = document.querySelector<HTMLElement>(
+    `[slideshow-button-right=${instanceName}]`
+  );
   if (!(buttonLeft && buttonRight)) return;
   const listWidth = parseFloat(getComputedStyle(list).getPropertyValue('width'));
   const itemWidth = parseFloat(getComputedStyle(listItem).getPropertyValue('width'));
   let maxLeftScroll = Math.max(listWidth / (itemWidth + gap));
   let maxRightScroll = 0;
 
-  const hideButtonRight = gsap
-    .timeline({ paused: false })
-    .to(buttonRight, { opacity: 0, cursor: 'auto' });
-  const hideButtonLeft = gsap
-    .timeline({ paused: true })
-    .to(buttonLeft, { opacity: 0, cursor: 'auto' });
+  if (!isInitialized) {
+    buttonRightTl = gsap.timeline({ paused: false });
+    buttonLeftTl = gsap.timeline({ paused: true });
+  } else {
+    buttonRightTl?.progress(0).kill();
+    buttonLeftTl?.progress(0).kill();
+    buttonRightTl = gsap.timeline({ paused: false });
+    buttonLeftTl = gsap.timeline({ paused: true });
 
-  buttonLeft.addEventListener('click', () => {
+    gsap
+      .to(list, {
+        x: 0,
+        duration: 1,
+        ease: 'back.out(2)',
+      })
+      .then((self) => self.kill());
+  }
+
+  buttonRightTl?.to(buttonRight, { opacity: 0, cursor: 'auto' });
+  buttonLeftTl?.to(buttonLeft, { opacity: 0, cursor: 'auto' });
+
+  buttonLeft.onclick = () => {
     if (maxLeftScroll > 0) {
       scroll(list, itemWidth, gap, '-');
       maxLeftScroll -= 1;
       maxRightScroll += 1;
-      if (hideButtonRight.progress() === 1) {
-        hideButtonRight.reverse();
+      if (buttonRightTl?.progress() === 1) {
+        buttonRightTl?.reverse();
       }
     }
 
     if (maxLeftScroll <= 0) {
-      hideButtonLeft.play();
+      buttonLeftTl?.play();
     }
-  });
+  };
 
-  buttonRight.addEventListener('click', () => {
+  buttonRight.onclick = () => {
     if (maxRightScroll > 0) {
       scroll(list, itemWidth, gap, '+');
       maxLeftScroll += 1;
       maxRightScroll -= 1;
-      if (hideButtonLeft.progress() === 1) {
-        hideButtonLeft.reverse();
+      if (buttonLeftTl?.progress() === 1) {
+        buttonLeftTl?.reverse();
       }
     }
 
     if (maxRightScroll <= 0) {
-      hideButtonRight.play();
+      buttonRightTl?.play();
     }
-  });
+  };
+
+  isInitialized = true;
 };
 
 function scroll(list: HTMLElement, width: number, gap: number, direction: '-' | '+') {

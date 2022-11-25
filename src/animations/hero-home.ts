@@ -30,7 +30,7 @@ export const registerHeroHome = () => {
     const gridItem2CalculatedHeight = gridItem2?.offsetHeight;
     const gridItem4CalculatedHeight = gridItem4?.offsetHeight;
     gsap.set(grid, {
-      gridTemplateRows: `2rem 10rem ${gridItem2CalculatedHeight}px ${gridItem4CalculatedHeight}px`,
+      gridTemplateRows: `0rem 10rem ${gridItem2CalculatedHeight}px ${gridItem4CalculatedHeight}px`,
     });
   }
 

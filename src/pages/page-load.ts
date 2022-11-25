@@ -46,7 +46,7 @@ export const pageNavigate = () => {
     .to('.transition', {
       y: '0%',
       display: 'block',
-      duration: 0.7,
+      duration: 0.8,
       ease: 'expo',
     })
     .play();

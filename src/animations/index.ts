@@ -6,3 +6,4 @@ export * from './web-cta';
 export * from './navigation';
 export * from './text-loop';
 export * from './horizontal-slideshow';
+export * from './accordion';

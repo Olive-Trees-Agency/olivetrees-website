@@ -1,4 +1,4 @@
-import { registerHorizontalSlideshow } from '../animations';
+import { registerHorizontalSlideshow, registerAccordion } from '../animations';
 import { debounce } from '../utils';
 
 export const loadContact = () => {
@@ -9,6 +9,8 @@ export const loadContact = () => {
       registerHeroTestimonials();
     }, 500)
   );
+
+  registerAccordion();
 };
 
 function registerHeroTestimonials() {

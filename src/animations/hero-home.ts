@@ -70,7 +70,7 @@ export const registerHeroHome = () => {
     )
     .then(() => {
       if (matchPhone.matches) {
-        gsap.set(grid, { gridTemplateRows: `2rem 10rem auto auto` });
+        gsap.set(grid, { gridTemplateRows: `0rem 10rem auto auto` });
       }
     });
 };

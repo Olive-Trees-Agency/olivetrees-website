@@ -11,14 +11,16 @@ export const registerHorizontalSlideshow = (
   gap: number,
   instanceName: string
 ) => {
-  const buttonLeft = document.querySelector<HTMLElement>(`[slideshow-button-left=${instanceName}]`);
   const buttonRight = document.querySelector<HTMLElement>(
     `[slideshow-button-right=${instanceName}]`
   );
-  if (!(buttonLeft && buttonRight)) return;
-  const listWidth = parseFloat(getComputedStyle(list).getPropertyValue('width'));
-  const itemWidth = parseFloat(getComputedStyle(listItem).getPropertyValue('width'));
-  let maxLeftScroll = Math.max(listWidth / (itemWidth + gap));
+  const buttonLeft = document.querySelector<HTMLElement>(`[slideshow-button-left=${instanceName}]`);
+  if (!(buttonRight && buttonLeft)) return;
+  const listWidth = list.scrollWidth;
+  const listViewportWidth = list.offsetWidth;
+  const itemWidth = listItem.offsetWidth;
+  const itemsInView = Math.max(listViewportWidth / (itemWidth + gap));
+  let maxLeftScroll = Math.max(listWidth / (itemWidth + gap)) - itemsInView;
   let maxRightScroll = 0;
 
   if (!isInitialized) {
@@ -39,10 +41,10 @@ export const registerHorizontalSlideshow = (
       .then((self) => self.kill());
   }
 
-  buttonRightTl?.to(buttonRight, { opacity: 0, cursor: 'auto' });
-  buttonLeftTl?.to(buttonLeft, { opacity: 0, cursor: 'auto' });
+  buttonRightTl?.to(buttonLeft, { opacity: 0, cursor: 'auto' });
+  buttonLeftTl?.to(buttonRight, { opacity: 0, cursor: 'auto' });
 
-  buttonLeft.onclick = () => {
+  buttonRight.onclick = () => {
     if (maxLeftScroll > 0) {
       scroll(list, itemWidth, gap, '-');
       maxLeftScroll -= 1;
@@ -57,7 +59,7 @@ export const registerHorizontalSlideshow = (
     }
   };
 
-  buttonRight.onclick = () => {
+  buttonLeft.onclick = () => {
     if (maxRightScroll > 0) {
       scroll(list, itemWidth, gap, '+');
       maxLeftScroll += 1;

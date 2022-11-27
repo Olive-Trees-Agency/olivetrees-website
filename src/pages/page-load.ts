@@ -14,7 +14,10 @@ let delay = 0.2;
 export const pageLoad = (beforeAnimationStart: CallableFunction) => {
   // Register core animations
   registerNavigation();
-  registerSplitText().then(() => {
+  registerSplitText(() => {
+    registerCharsSlideUp();
+    registerWordsSlideUp();
+  }).then(() => {
     registerCharsSlideUp();
     registerWordsSlideUp();
   });
@@ -27,49 +30,57 @@ export const pageLoad = (beforeAnimationStart: CallableFunction) => {
   const t = document.querySelector('.transition_background_lottie') as EventTarget;
   simulateEvent(t, 'click');
 
-  return gsap
-    .to('.transition', {
-      y: '-101%',
-      display: 'none',
-      duration: 0.8,
-      delay: delay,
-      ease: 'expo',
-    })
-    .play();
+  return gsap.to('.transition', {
+    y: '-101%',
+    display: 'none',
+    duration: 0.7,
+    delay: delay,
+    ease: 'expo',
+  });
 };
 
 export const pageNavigate = () => {
   const t = document.querySelector('.transition_background_lottie') as EventTarget;
   simulateEvent(t, 'click');
 
-  return gsap
-    .to('.transition', {
-      y: '0%',
-      display: 'block',
-      duration: 0.8,
-      ease: 'expo',
-    })
-    .play();
+  return gsap.to('.transition', {
+    y: '0%',
+    display: 'block',
+    duration: 0.7,
+    ease: 'expo',
+  });
 };
 
 // On link click
 $('a').on('click', function (e) {
+  const href = $(this)?.attr('href');
+
   if (
     $(this).prop('hostname') === window.location.host &&
-    $(this)?.attr('href')?.indexOf('#') === -1 &&
+    href?.indexOf('#') === -1 &&
     !$(this).hasClass('no-transition') &&
     $(this).attr('target') !== '_blank'
   ) {
     e.preventDefault();
-    const transitionURL = $(this).attr('href');
     delay = 0;
     pageNavigate().then(() => {
-      if (transitionURL) {
-        window.location.assign(transitionURL);
+      if (href) {
+        window.location.assign(href);
       }
     });
-  } else if ($(this)?.attr('href')?.indexOf('#top')) {
+    return false;
+  }
+
+  if (href && href?.indexOf('#top') > -1) {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+
+  if (href && href?.indexOf('#') > -1) {
+    e.preventDefault();
+    const elementId = `#${href.split('#')[1]}`;
+    document.querySelector(elementId)?.scrollIntoView({ behavior: 'smooth' });
+    return false;
   }
 });

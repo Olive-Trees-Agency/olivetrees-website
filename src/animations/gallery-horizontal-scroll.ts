@@ -3,6 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+let disabled = false;
+
 /**
  * Make sure every element on the page has a defined height.
  * Otherwise the gsap scroll trigger can get an offset.
@@ -59,11 +61,8 @@ export const registerGalleryHorizontalScroll = async () => {
 
   calculateScroll();
 
-  let resizeTimeout: number;
   window.addEventListener('resize', () => {
-    if (resizeTimeout) clearTimeout(resizeTimeout);
-    // timeout set to 0 because loses sync with validate on refresh of other animations
-    resizeTimeout = setTimeout(() => calculateScroll(), 0);
+    calculateScroll();
   });
 
   const tl = gsap.timeline({

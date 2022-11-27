@@ -1,11 +1,6 @@
 /*
   !!! To improve performance, the content of this file should be pasted in the global head tag of your website !!!
 */
-
-html {
-  scroll-behavior: smooth;
-}
-
 body .transition {
   display: block;
 }

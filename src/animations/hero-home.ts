@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { matchPhone } from '../utils';
 
@@ -21,6 +22,8 @@ export const registerHeroHome = () => {
 
   const scrollButton = document.querySelector('.home_hero_scroll-lottie-link');
   const contactButton = document.querySelector('.hero_contact-lottie-link');
+
+  setSectionHeight();
 
   gsap.set(gridItem2TextWrapper, { overflow: 'hidden' });
   gsap.set(gridItem2, { backgroundColor: '#9fca07' });
@@ -74,3 +77,24 @@ export const registerHeroHome = () => {
       }
     });
 };
+
+function setSectionHeight() {
+  const section = document.querySelector('.section_hero.is-home');
+  // Set section height to 100vh if screen width/height ratio is okay
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  if (aspectRatio > 1.8) {
+    gsap.set(section, { height: '100vh' });
+  }
+  window.addEventListener('resize', () => {
+    const aspectRatio = window.innerWidth / window.innerHeight;
+    if (aspectRatio > 1.8) {
+      gsap.set(section, { height: '100vh' });
+      // re-calculate all scroll triggers positions
+      ScrollTrigger.getAll().forEach((st) => st.refresh());
+    } else {
+      gsap.set(section, { height: 'auto' });
+      // re-calculate all scroll triggers positions
+      ScrollTrigger.getAll().forEach((st) => st.refresh());
+    }
+  });
+}

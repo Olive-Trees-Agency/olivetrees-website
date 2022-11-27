@@ -3,8 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-let disabled = false;
-
 /**
  * Make sure every element on the page has a defined height.
  * Otherwise the gsap scroll trigger can get an offset.
@@ -73,24 +71,24 @@ export const registerGalleryHorizontalScroll = async () => {
       scrub: 2,
       markers: false,
       invalidateOnRefresh: true,
-      onLeaveBack: () => {
-        ScrollTrigger.getById('horizontal-gallery-heading')?.enable();
-        ScrollTrigger.getById('horizontal-gallery-caption')?.enable();
-      },
+      // onLeaveBack: () => {
+      //   ScrollTrigger.getById('horizontal-gallery-heading')?.enable();
+      //   ScrollTrigger.getById('horizontal-gallery-caption')?.enable();
+      // },
     },
   });
 
   tl.to('.section_gallery-horizontal_collection-list', {
     x: () => -moveDistance,
     duration: 1,
-    onStart: () => {
-      ScrollTrigger.getById('horizontal-gallery-heading')?.disable(false, false);
-      ScrollTrigger.getById('horizontal-gallery-caption')?.disable(false, false);
-    },
-    // onUpdate: () => {
-    //   // Update the text scrolltriggers so that text doesn't animate out (fix for sticky content).
-    //   ScrollTrigger.getById('horizontal-gallery-heading')?.refresh();
-    //   ScrollTrigger.getById('horizontal-gallery-caption')?.refresh();
+    // onStart: () => {
+    //   ScrollTrigger.getById('horizontal-gallery-heading')?.disable(false, false);
+    //   ScrollTrigger.getById('horizontal-gallery-caption')?.disable(false, false);
     // },
+    onUpdate: () => {
+      // Update the text scrolltriggers so that text doesn't animate out (fix for sticky content).
+      ScrollTrigger.getById('horizontal-gallery-heading')?.refresh();
+      ScrollTrigger.getById('horizontal-gallery-caption')?.refresh();
+    },
   });
 };

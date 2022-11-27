@@ -6,6 +6,7 @@ import {
   registerWordsSlideUp,
   registerNavigation,
   registerBackgroundColor,
+  registerFadeIn,
 } from '../animations';
 import { registerSplitText } from '../utils';
 
@@ -21,6 +22,7 @@ export const pageLoad = (beforeAnimationStart: CallableFunction) => {
     registerCharsSlideUp();
     registerWordsSlideUp();
   });
+  registerFadeIn();
   registerBackgroundColor();
 
   // Callback before done loading animation starts

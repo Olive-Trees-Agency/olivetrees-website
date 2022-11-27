@@ -63,7 +63,7 @@ export const registerHeroHome = () => {
     )
     .fromTo(gridItem4Text, { opacity: 0 }, { opacity: 1 });
 
-  gsap.fromTo(scrollButton, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, delay: 10 });
+  gsap.fromTo(scrollButton, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, delay: 2 });
 
   gsap
     .fromTo(

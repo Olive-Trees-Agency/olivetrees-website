@@ -7,3 +7,4 @@ export * from './navigation';
 export * from './text-loop';
 export * from './horizontal-slideshow';
 export * from './accordion';
+export * from './fade';

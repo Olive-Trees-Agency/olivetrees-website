@@ -17,3 +17,17 @@ body .transition {
 [text-split] {
   font-kerning: none;
 }
+
+@media (min-width: 992px) {
+  body:hover .cursor-trigger {
+    display: flex;
+  }
+}
+
+.cursor-trigger {
+  pointer-events: none;
+}
+
+.w-editor .cursor-trigger{
+  display:none
+}

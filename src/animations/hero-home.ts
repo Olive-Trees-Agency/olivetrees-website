@@ -80,14 +80,17 @@ export const registerHeroHome = () => {
 
 function setSectionHeight() {
   const section = document.querySelector('.section_hero.is-home');
+  if (!section) return;
   // Set section height to 100vh if screen width/height ratio is okay
   const aspectRatio = window.innerWidth / window.innerHeight;
-  if (aspectRatio > 1.8) {
+  const heightDiff = window.innerHeight - section?.clientHeight;
+  if (aspectRatio > 1.8 && heightDiff < 200) {
     gsap.set(section, { height: '100vh' });
   }
   window.addEventListener('resize', () => {
     const aspectRatio = window.innerWidth / window.innerHeight;
-    if (aspectRatio > 1.8) {
+    const heightDiff = window.innerHeight - section?.clientHeight;
+    if (aspectRatio > 1.8 && heightDiff < 200) {
       gsap.set(section, { height: '100vh' });
       // re-calculate all scroll triggers positions
       ScrollTrigger.getAll().forEach((st) => st.refresh());

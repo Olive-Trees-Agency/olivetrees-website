@@ -9,3 +9,9 @@ export const matchTablet = window.matchMedia('(min-width: 768px and max-width: 9
 export const matchMobileAll = window.matchMedia('(max-width: 991px)');
 
 export const matchDesktop = window.matchMedia('(min-width: 992px)');
+
+export const isMobile = () => {
+  if ('ontouchstart' in document.documentElement) {
+    return true;
+  }
+};

@@ -2,7 +2,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import { matchPhone } from '../utils';
+import { matchPhone, isMobile, matchDesktop } from '../utils';
 
 export const registerHeroHome = () => {
   const grid = document.querySelector('.home_hero_grid');
@@ -34,6 +34,12 @@ export const registerHeroHome = () => {
     const gridItem4CalculatedHeight = gridItem4?.offsetHeight;
     gsap.set(grid, {
       gridTemplateRows: `0rem 10rem ${gridItem2CalculatedHeight}px ${gridItem4CalculatedHeight}px`,
+    });
+  }
+
+  if (isMobile() && matchDesktop.matches) {
+    gsap.set(grid, {
+      gridTemplateRows: `4rem 4rem 4rem 4rem 4rem 8rem 4rem 4rem`,
     });
   }
 
@@ -87,6 +93,7 @@ function setSectionHeight() {
   if (aspectRatio > 1.8 && heightDiff < 200) {
     gsap.set(section, { height: '100vh' });
   }
+
   window.addEventListener('resize', () => {
     const aspectRatio = window.innerWidth / window.innerHeight;
     const heightDiff = window.innerHeight - section?.clientHeight;

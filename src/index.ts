@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '$styles/index.css';
 
 import { pageLoad, loadHome, loadContact } from './pages';
-import { matchPhoneAll, matchDesktop } from './utils';
+import { matchPhoneAll, matchDesktop, isMobile } from './utils';
 
 window.Webflow ||= [];
 gsap.registerPlugin(ScrollTrigger);
@@ -52,7 +52,7 @@ window.Webflow.push(() => {
     }
 
     // Custom cursor
-    if (matchDesktop.matches) {
+    if (matchDesktop.matches && !isMobile()) {
       const cursor = document.querySelector('.cursor');
       if (cursor) {
         $('a, button, input, textarea, [cursor-target]').on('mouseenter', () => {

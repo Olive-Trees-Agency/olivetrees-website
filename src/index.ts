@@ -71,3 +71,8 @@ window.Webflow.push(() => {
     window.location.reload();
   });
 });
+
+// Reload on orientation change
+$(window).on('orientationchange', () => {
+  window.location.reload();
+});

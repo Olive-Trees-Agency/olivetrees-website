@@ -73,7 +73,7 @@ window.Webflow.push(() => {
 });
 
 // Reload on orientation change
-window.addEventListener('orientationchange', () => {
+screen.orientation.addEventListener('change', () => {
   console.log('test');
   window.location.reload();
-});
+})

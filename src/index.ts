@@ -22,6 +22,7 @@ window.Webflow.push(() => {
       : new Date('2022-11-29T19:00:00');
 
     if (!(date > releaseDate)) {
+      gsap.set('body', { height: '100%', overflow: 'hidden' });
       gsap.set('.transition', { display: 'none' });
       gsap.set('.under-construction', { display: 'flex' });
 

@@ -27,10 +27,13 @@ function registerHeroTestimonials() {
 
 function setHeroSectionHeight() {
   const section = document.querySelector('.section_hero.is-contact');
+  if (!section) return;
+
   // Set section height to 100vh if screen width/height ratio is okay
   const aspectRatio = window.innerWidth / window.innerHeight;
+  const heightDiff = window.innerHeight - section?.clientHeight;
 
-  if (aspectRatio > 1.8) {
+  if (aspectRatio > 1.7 && heightDiff < 200) {
     gsap.set(section, { height: '100vh' });
   } else {
     gsap.set(section, { height: 'auto' });

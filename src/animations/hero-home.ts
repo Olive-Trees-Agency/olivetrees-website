@@ -89,15 +89,15 @@ function setSectionHeight() {
   if (!section) return;
   // Set section height to 100vh if screen width/height ratio is okay
   const aspectRatio = window.innerWidth / window.innerHeight;
-  const heightDiff = window.innerHeight - section?.clientHeight;
-  if (aspectRatio > 1.8 && heightDiff < 200) {
+  const heightDiff = window.innerHeight - section.clientHeight;
+  if (aspectRatio > 1.7 && heightDiff < 200) {
     gsap.set(section, { height: '100vh' });
   }
 
   window.addEventListener('resize', () => {
     const aspectRatio = window.innerWidth / window.innerHeight;
     const heightDiff = window.innerHeight - section?.clientHeight;
-    if (aspectRatio > 1.8 && heightDiff < 200) {
+    if (aspectRatio > 1.7 && heightDiff < 200) {
       gsap.set(section, { height: '100vh' });
       // re-calculate all scroll triggers positions
       ScrollTrigger.getAll().forEach((st) => st.refresh());

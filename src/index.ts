@@ -14,6 +14,28 @@ const testRelease = false;
 
 // On Webflow load
 window.Webflow.push(() => {
+  Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
+    get: function () {
+      return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
+    },
+  });
+
+  $('body').on('click touchstart', function () {
+    const videoElements = document.querySelectorAll<HTMLMediaElement>('video');
+
+    if (!(videoElements && videoElements.length > 0)) return;
+
+    videoElements.forEach((videoElement) => {
+      if (videoElement.playing) {
+        // video is already playing so do nothing
+      } else {
+        // video is not playing
+        // so play video now
+        videoElement.play();
+      }
+    });
+  });
+
   const { host } = window.location;
   if (!host.includes('webflow.io') || testRelease) {
     const date = new Date();

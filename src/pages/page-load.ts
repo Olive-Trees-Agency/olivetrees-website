@@ -15,14 +15,18 @@ let delay = 0.2;
 export const pageLoad = (beforeAnimationStart: CallableFunction) => {
   // Register core animations
   registerNavigation();
-  registerSplitText(() => {
-    registerCharsSlideUp();
-    registerWordsSlideUp();
-  }).then(() => {
-    registerCharsSlideUp();
-    registerWordsSlideUp();
-  });
-  registerFadeIn();
+
+  if (navigator.hardwareConcurrency > 2) {
+    registerSplitText(() => {
+      registerCharsSlideUp();
+      registerWordsSlideUp();
+    }).then(() => {
+      registerCharsSlideUp();
+      registerWordsSlideUp();
+    });
+    registerFadeIn();
+  }
+
   registerBackgroundColor();
 
   // Callback before done loading animation starts

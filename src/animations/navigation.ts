@@ -82,9 +82,8 @@ function menuButtonClick() {
 
 window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
-    if (open) {
-      tl?.reverse();
-      open = false;
+    if (open && menuButton) {
+      simulateEvent(menuButton, 'click');
     }
   }
 });

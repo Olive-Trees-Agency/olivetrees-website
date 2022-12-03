@@ -80,6 +80,15 @@ function menuButtonClick() {
   }
 }
 
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    if (open) {
+      tl?.reverse();
+      open = false;
+    }
+  }
+});
+
 export const unregisterNavigation = () => {
   textSplit?.revert();
   tl?.kill();

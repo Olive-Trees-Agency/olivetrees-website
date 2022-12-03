@@ -98,9 +98,12 @@ window.addEventListener('pageshow', (event) => {
     const t = document.querySelector('.transition_background_lottie') as EventTarget;
     simulateEvent(t, 'click');
 
-    return gsap.set('.transition', {
+    return gsap.to('.transition', {
       y: '-101%',
       display: 'none',
+      duration: 0.7,
+      delay: delay,
+      ease: 'expo',
     });
   }
 });

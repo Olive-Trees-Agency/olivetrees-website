@@ -90,3 +90,17 @@ $('a').on('click', function (e) {
     return false;
   }
 });
+
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    // Page wa restored from the bfcache: https://web.dev/bfcache/
+    // Play the lottie animation
+    const t = document.querySelector('.transition_background_lottie') as EventTarget;
+    simulateEvent(t, 'click');
+
+    return gsap.set('.transition', {
+      y: '-101%',
+      display: 'none',
+    });
+  }
+});

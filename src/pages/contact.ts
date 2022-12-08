@@ -33,7 +33,7 @@ function setHeroSectionHeight() {
   const aspectRatio = window.innerWidth / window.innerHeight;
   const heightDiff = window.innerHeight - section?.clientHeight;
 
-  if (aspectRatio > 1.7 && heightDiff < 200  && heightDiff > 0) {
+  if (aspectRatio > 1.7 && heightDiff < 200 && heightDiff > 0) {
     gsap.set(section, { height: '100vh' });
   } else {
     gsap.set(section, { height: 'auto' });

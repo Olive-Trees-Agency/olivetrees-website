@@ -87,10 +87,10 @@ export const registerHeroHome = () => {
 function setSectionHeight() {
   const section = document.querySelector('.section_hero.is-home');
   if (!section) return;
-  // Set section height to 100vh if screen width/height ratio is okay
+  // Set section height to 100vh if screen width/height ratio is okay and there is enough space to show content
   const aspectRatio = window.innerWidth / window.innerHeight;
   const heightDiff = window.innerHeight - section.clientHeight;
-  if (aspectRatio > 1.7 && heightDiff < 200) {
+  if (aspectRatio > 1.7 && heightDiff < 200 && heightDiff > 0) {
     gsap.set(section, { height: '100vh' });
   }
 

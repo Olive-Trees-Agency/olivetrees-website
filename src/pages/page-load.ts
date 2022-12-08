@@ -49,11 +49,16 @@ export const pageNavigate = () => {
   const t = document.querySelector('.transition_background_lottie') as EventTarget;
   simulateEvent(t, 'click');
 
-  return gsap.to('.transition', {
+  gsap.set('.transition_logo-image', { opacity: 0 });
+  const backgroundAnimation = gsap.to('.transition', {
     y: '0%',
     display: 'block',
     duration: 0.7,
     ease: 'expo',
+  });
+
+  return backgroundAnimation.then(() => {
+    return gsap.to('.transition_logo-image', { opacity: 1, duration: 0.25 });
   });
 };
 

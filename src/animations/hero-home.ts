@@ -27,6 +27,8 @@ export class HeroHomeAnimation {
   private _scrollButtonElement: HTMLAnchorElement | null;
   private _contactButtonElement: HTMLAnchorElement | null;
 
+  private _currentSectionHeight = 'auto';
+
   /**
    * Initialize and play the `HeroHomeAnimation`.
    */
@@ -75,18 +77,21 @@ export class HeroHomeAnimation {
     // Set section height to 100vh if screen width/height ratio is okay and there is enough space to show content
     if (isSectionFullHeightCapable()) {
       gsap.set(section, { height: '100vh' });
+      this._currentSectionHeight = '100vh';
     }
 
     // Re-evaluate the section heigth when the window is resized
     // when the window is resized all ScrollTriggers should be refreshed because the body height changes
     window.addEventListener('resize', () => {
-      if (isSectionFullHeightCapable()) {
+      if (isSectionFullHeightCapable() && this._currentSectionHeight !== '100vh') {
         gsap.set(section, { height: '100vh' });
-      } else {
+        this._currentSectionHeight = '100vh';
+        ScrollTrigger.getAll().forEach((st) => st.refresh());
+      } else if (this._currentSectionHeight !== 'auto') {
         gsap.set(section, { height: 'auto' });
+        this._currentSectionHeight = 'auto';
+        ScrollTrigger.getAll().forEach((st) => st.refresh());
       }
-
-      ScrollTrigger.getAll().forEach((st) => st.refresh());
     });
   }
 

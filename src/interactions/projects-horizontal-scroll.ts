@@ -22,6 +22,7 @@ export class ProjectsHorizontalScroll {
 
   private _scrollSpeed = 1;
   private _moveDistance = 0;
+  private _previousViewportWidth: number;
 
   /**
    * Initialize and play the `GalleryScrollAnimation`.
@@ -40,8 +41,13 @@ export class ProjectsHorizontalScroll {
     gsap.set(this._triggerElement, { height: 'calc(100% - 100vh)' });
     this.calculateScroll();
 
+    // Only recalculate when the width changes, not when the height changes
+    this._previousViewportWidth = window.innerWidth;
     window.addEventListener('resize', () => {
-      this.calculateScroll();
+      if (window.innerWidth !== this._previousViewportWidth) {
+        this.calculateScroll();
+        this._previousViewportWidth = window.innerWidth;
+      }
     });
 
     const tl = gsap.timeline({

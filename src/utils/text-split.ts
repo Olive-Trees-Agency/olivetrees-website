@@ -36,7 +36,11 @@ export class TextSplit extends EventTarget {
     window.addEventListener(
       'resize',
       debounce(() => {
-        this.reload();
+        // Only reload the text split when the viewport width changes because the height doesn't affect text size
+        if (this._windowWidth !== window.innerWidth) {
+          this.reload();
+          this._windowWidth = window.innerWidth;
+        }
       }, debounceTimeout)
     );
   }

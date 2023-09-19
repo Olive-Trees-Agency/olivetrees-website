@@ -10,6 +10,8 @@ export class TextLoopAnimation {
     return this._elements;
   }
 
+  private _previousWindowWidth: number;
+
   /**
    * Apply a text loop animation to all elements with the `text-loop` HTML attribute.
    *
@@ -39,6 +41,7 @@ export class TextLoopAnimation {
    */
   constructor() {
     this._elements = document.querySelectorAll(this.ELEMENTS_SELECTOR);
+    this._previousWindowWidth = window.innerWidth;
 
     this._elements.forEach((element) => {
       const text = element.firstChild;
@@ -49,12 +52,15 @@ export class TextLoopAnimation {
 
       let tween = this.startLoop(element);
 
-      // Restart the animation when the window has been resized because this changes the text size
+      // Restart the animation when the window width has been resized because this changes the text size
       window.addEventListener(
         'resize',
         debounce(() => {
-          tween.progress(0).kill();
-          tween = this.startLoop(element);
+          if (window.innerWidth !== this._previousWindowWidth) {
+            tween.progress(0).kill();
+            tween = this.startLoop(element);
+            this._previousWindowWidth = window.innerWidth;
+          }
         }, 500)
       );
     });

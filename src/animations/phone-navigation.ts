@@ -96,7 +96,9 @@ export class PhoneNavigationAnimation {
     );
 
     // Add event listener
-    this.menuButton.addEventListener('click', this.menuToggle);
+    this.menuButton.addEventListener('click', () => {
+      this.menuToggle();
+    });
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
         if (this._isMenuOpen && this.menuButton) {

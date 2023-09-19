@@ -1,30 +1,45 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-export const registerFadeIn = () => {
-  (gsap.utils.toArray('[fade-in]') as Array<Element>).forEach((element, index) => {
-    const begin = element.getAttribute('begin') ?? undefined;
-    const end = element.getAttribute('end') ?? undefined;
-    const id = element.getAttribute('scroll-trigger-id');
-    const duration = element.getAttribute('duration') ?? 0.5;
+import { ScrollTriggerAttributes, TimelineAttributes } from '$models/gsap-attributes';
 
-    const tl = gsap.timeline({ paused: true });
-    tl.from(element, {
-      opacity: 0,
-      duration: duration,
-      ease: 'circ.out(1)',
-    });
+import { ScrollAnimation } from './scroll-animation';
 
-    ScrollTrigger.create({
-      id: id ?? 'fade-in-' + index,
-      trigger: element,
-      start: begin,
-      end: end,
-      markers: false,
-      onEnter: () => tl.play(),
-      onLeave: () => tl.reverse(),
-      onEnterBack: () => tl.play(),
-      onLeaveBack: () => tl.reverse(),
+export class FadeInScrollAnimation extends ScrollAnimation {
+  /**
+   * Apply a fade in animation to all elements with the `fade-in` attribute defined.
+   */
+  constructor() {
+    super('[fade-in]');
+    this.initialize();
+  }
+
+  protected initialize() {
+    this._elements.forEach((element, i) => {
+      const stAttributes = new ScrollTriggerAttributes(element);
+      const tlAttributes = new TimelineAttributes(element);
+
+      const tl = gsap.timeline({ paused: true });
+      this._timelines.push(tl);
+      tl.from(element, {
+        opacity: 0,
+        duration: tlAttributes.duration,
+        ease: tlAttributes.ease ?? 'circ.inOut(1)',
+      });
+
+      this._scrollTriggers.push(
+        ScrollTrigger.create({
+          id: stAttributes.id ?? `fade-in-${i}`,
+          trigger: element,
+          start: stAttributes.begin,
+          end: stAttributes.end,
+          markers: false,
+          onEnter: () => tl.play(),
+          onLeave: () => tl.reverse(),
+          onEnterBack: () => tl.play(),
+          onLeaveBack: () => tl.reverse(),
+        })
+      );
     });
-  });
+  }
 }

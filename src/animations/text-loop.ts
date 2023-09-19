@@ -1,49 +1,79 @@
-/* eslint-disable prefer-const */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { gsap } from 'gsap';
 
-import { debounce } from '../utils';
+import { debounce } from '$utils';
 
-export const registerTextLoop = () => {
-  const elements = document.querySelectorAll<HTMLElement>('[text-loop]');
-  if (!elements || elements.length < 1) return;
+export class TextLoopAnimation {
+  private ELEMENTS_SELECTOR = '[text-loop]';
 
-  elements.forEach((element) => {
-    const text = element.firstChild;
-    if (!text) return;
+  private _elements: NodeListOf<HTMLElement>;
+  public get elements(): NodeListOf<HTMLElement> {
+    return this._elements;
+  }
 
-    const textClone = text.cloneNode(true);
-    element.append(textClone);
-    let tween;
-    tween = startLoop(element, tween);
+  /**
+   * Apply a text loop animation to all elements with the `text-loop` HTML attribute.
+   *
+   * This animation requires the `[text-loop]` element to have `display: flex;` with a `column-gap`set.
+   * Reason being that the original text element is duplicated inside the `[text-loop]` element and a gap needs to be defined between the original text element and the cloned text element.
+   * It is also required that the `[text-loop]` element is the wrapper to a text element.
+   *
+   * ---
+   *
+   * HTML structure needed for the animation:
+   * ```html
+   * <style>
+   *  .text-wrapper {
+   *    display: flex;
+   *    column-gap: 0.5rem;
+   *    overflow: hidden;
+   *  }
+   *
+   *  .text {
+   *    text-wrap: nowrap;
+   *  }
+   * </style>
+   * <div text-loop class="text-wrapper">
+   *  <span class="text">Looping text</span>
+   * </div>
+   * ```
+   */
+  constructor() {
+    this._elements = document.querySelectorAll(this.ELEMENTS_SELECTOR);
 
-    window.addEventListener(
-      'resize',
-      debounce(() => {
-        startLoop(element);
-      }, 500)
+    this._elements.forEach((element) => {
+      const text = element.firstChild;
+      if (!text) return;
+
+      const textClone = text.cloneNode(true);
+      element.append(textClone);
+
+      let tween = this.startLoop(element);
+
+      // Restart the animation when the window has been resized because this changes the text size
+      window.addEventListener(
+        'resize',
+        debounce(() => {
+          tween.progress(0).kill();
+          tween = this.startLoop(element);
+        }, 500)
+      );
+    });
+  }
+
+  private startLoop(element: HTMLElement) {
+    return gsap.fromTo(
+      element.children,
+      { x: 0 },
+      { x: this.calculateTranslationDistance(element), duration: 20, repeat: -1, ease: 'none' }
     );
-  });
-};
+  }
 
-function startLoop(element: HTMLElement, tween?: gsap.core.Tween) {
-  const progress = tween ? tween.progress() : 0;
-  tween?.progress(0).kill();
-
-  const width = parseInt(
-    getComputedStyle(element.firstChild as HTMLElement).getPropertyValue('width'),
-    10
-  );
-  const gap = parseInt(getComputedStyle(element).getPropertyValue('column-gap'), 10);
-  const translationDistance = -1 * (width + gap);
-
-  const returnTween = gsap.fromTo(
-    element.children,
-    { x: 0 },
-    { x: translationDistance, duration: 20, repeat: -1, ease: 'none' }
-  );
-  returnTween.progress(progress);
-
-  return returnTween;
+  private calculateTranslationDistance(element: HTMLElement) {
+    const width = parseInt(
+      getComputedStyle(element.firstChild as HTMLElement).getPropertyValue('width'),
+      10
+    );
+    const gap = parseInt(getComputedStyle(element).getPropertyValue('column-gap'), 10);
+    return -1 * (width + gap);
+  }
 }

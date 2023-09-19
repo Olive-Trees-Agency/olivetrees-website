@@ -1,45 +1,76 @@
-import SplitType, { SplitTypeOptions } from 'split-type';
+import SplitType, { SplitTypeOptions, TargetElement } from 'split-type';
 
 import { debounce } from './debounce';
-import { isMobile } from './media-queries';
 
-let instance: SplitType;
-const options: Partial<SplitTypeOptions> = {
-  types: 'lines, words, chars',
-  tagName: 'span',
-  lineClass: 'text-line',
-};
+export class TextSplit extends EventTarget {
+  private _windowWidth: number;
+  private _splitType: SplitType;
+  private _options: Partial<SplitTypeOptions>;
 
-let windowHeight: number;
-let windowWidth: number;
+  /**
+   * Splits the text of all elements that have the `text-split` attribute set.
+   * By default lines, words and chars will be wrapped with a span element.
+   *
+   * The `reload`event is called when the viewport width is resized, a debounce of 500ms is applied.
+   *
+   * Set `font-kerning: none` in CSS to improve performance.
+   *
+   * @param target The target element to apply the text split to.
+   * @param options The options for splitting the text.
+   * @param debounceTimeout This debounce timeout (ms) is applied to the window's resize event which is the trigger for reloading the text split.
+   */
+  constructor(
+    target: TargetElement = '[text-split]',
+    options: Partial<SplitTypeOptions> = {
+      types: 'lines, words, chars',
+      tagName: 'span',
+      lineClass: 'text-line',
+    },
+    debounceTimeout = 100
+  ) {
+    super();
+    this._options = options;
+    this._splitType = new SplitType(target, this._options);
+    this._windowWidth = window.innerWidth;
 
-export const registerSplitText = async (onRecalculate?: CallableFunction) => {
-  // Set in css for better performance.
-  // (gsap.utils.toArray('[text-split]') as Array<Element>).forEach((element) => {
-  //   gsap.set(element, { fontKerning: 'none' });
-  // });
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        this.reload();
+      }, debounceTimeout)
+    );
+  }
 
-  instance = new SplitType('[text-split]', options);
+  /**
+   * Revert the text split.
+   */
+  public revert() {
+    this._splitType.revert();
+  }
 
-  windowHeight = window.innerHeight;
-  windowWidth = window.innerWidth;
+  /**
+   * Reload the text split by first reverting and the splitting again.
+   * @param silent Don't dispatch the `reload` event.
+   */
+  public reload(silent = false) {
+    this._splitType.revert();
+    this._splitType.split(this._options);
+    if (!silent) this.dispatchEvent(new Event('reload'));
+  }
 
-  window.addEventListener(
-    'resize',
-    debounce(() => {
-      const newHeight = window.innerHeight;
-      const newWidth = window.innerWidth;
+  public addEventListener(
+    type: 'reload',
+    callback: EventListenerOrEventListenerObject | null,
+    options?: AddEventListenerOptions | boolean
+  ) {
+    super.addEventListener(type, callback, options);
+  }
 
-      if (newWidth === windowWidth && isMobile()) {
-        windowHeight = newHeight;
-        return;
-      }
-
-      instance.revert();
-      instance.split(options);
-      if (onRecalculate) onRecalculate();
-    }, 500)
-  );
-
-  return instance;
-};
+  removeEventListener(
+    type: 'reload',
+    callback: EventListenerOrEventListenerObject | null,
+    options?: boolean | EventListenerOptions | undefined
+  ) {
+    super.removeEventListener(type, callback, options);
+  }
+}

@@ -1,7 +1,7 @@
-export const rgba2hex = (rgba) =>
+export const rgba2hex = (rgba: string) =>
   `#${rgba
     .match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/)
-    .slice(1)
+    ?.slice(1)
     .map((n, i) =>
       (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n))
         .toString(16)

@@ -15,3 +15,5 @@ export const isMobile = () => {
     return true;
   }
 };
+
+export const matchOrientationLandscape = window.matchMedia('(orientation: landscape)');

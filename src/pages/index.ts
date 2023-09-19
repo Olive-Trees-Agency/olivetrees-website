@@ -1,3 +1,3 @@
-export * from './page-load';
-export * from './home';
-export * from './contact';
+export * from './page';
+export * from './home-page';
+export * from './contact-page';
